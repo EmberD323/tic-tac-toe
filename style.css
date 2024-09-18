@@ -1,0 +1,13 @@
+:root{
+    box-sizing: border-box;
+}
+.gameContainer{
+    display:grid;
+    grid-template-columns: repeat(3,1fr);
+    
+
+}
+.gameContainer>*{
+    border:1px solid red;
+    height: 40px;
+}

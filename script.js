@@ -1,29 +1,30 @@
-let Gameboard = (function createGameboard(){//module for creating initial empty gameboard
+let Gameboard = (
+    function createGameboard(){//module for creating initial empty gameboard
     let cell1, cell2, cell3;
     const createEmptyBoard = {row1:[cell1,cell2,cell3]
         ,row2:[cell1,cell2,cell3]
         ,row3:[cell1,cell2,cell3]}
     function addMarker(gameboard,marker,rownumber,cell){
-        if(marker==1){
+        if(marker=="x"){
             if(rownumber==1){
-                gameboard.row1[cell] = 1;
+                gameboard.row1[cell] = "x";
             }
             else if(rownumber==2){
-                gameboard.row2[cell] = 1;
+                gameboard.row2[cell] = "x";
             }
             else if(rownumber==3){
-                gameboard.row3[cell] = 1;
+                gameboard.row3[cell] = "x";
             }
         }
         else{
             if(rownumber==1){
-                gameboard.row1[cell] = 0;
+                gameboard.row1[cell] = "o";
             }
             else if(rownumber==2){
-                gameboard.row2[cell] = 0;
+                gameboard.row2[cell] = "o";
             }
             else if(rownumber==3){
-                gameboard.row3[cell] = 0;
+                gameboard.row3[cell] = "o";
             }
         }
 
@@ -38,12 +39,10 @@ let Gameboard = (function createGameboard(){//module for creating initial empty 
             let cell3 = `${gameboard[row][2]}`;
             if(typeof cell1undefined !== 'undefined'){
                 if(cell1==cell2&&cell1==cell3&&cell2==cell3){
-                    console.log("We have a winner by rows.The " +cell1+" marker wins.");
+                    alert("We have a winner by rows.The " +cell1+" marker wins.");
                     return;
                 }
             }
-            
-            
           }
         //check for win in columns
         for(i=0;i<3;i++){
@@ -53,7 +52,7 @@ let Gameboard = (function createGameboard(){//module for creating initial empty 
             let row3i = gameboard.row3[i];
             if(typeof row1undefined !== 'undefined'){
                 if(row1i==row2i&&row1i==row3i&&row2i==row3i){
-                    console.log("We have a winner by columns.The " +row1i+" marker wins.");
+                    alert("We have a winner by columns.The " +row1i+" marker wins.");
                     return;
                 }
             }
@@ -67,11 +66,11 @@ let Gameboard = (function createGameboard(){//module for creating initial empty 
         if(diagonalOneCheck.length >0||diagonalTwoCheck.length >0){
         }
         else if(diagonalOne[0]==diagonalOne[1]&&diagonalOne[0]==diagonalOne[2]&&diagonalOne[1]==diagonalOne[2]){
-            console.log("We have a winner by diagonal1.The " +diagonalOne[0]+" marker wins.");
+            alert("We have a winner by diagonal1.The " +diagonalOne[0]+" marker wins.");
                 return;
         }
         else if(diagonalTwo[0]==diagonalTwo[1]&&diagonalTwo[0]==diagonalTwo[2]&&diagonalTwo[1]==diagonalTwo[2]){
-            console.log("We have a winner by diagonal2.The " +diagonalTwo[0]+" marker wins.");
+            alert("We have a winner by diagonal2.The " +diagonalTwo[0]+" marker wins.");
                 return;
         }
         
@@ -85,42 +84,90 @@ let Gameboard = (function createGameboard(){//module for creating initial empty 
                 return;
             }
         }
-        console.log("It's a tie!")
+        alert("It's a tie!");
         return;
     }
-    return {createEmptyBoard,addMarker,checkForWinOrTie};
+    function addGameboardToDisplay(gameboard){
+        let cellsElements = document.querySelectorAll(".gameContainer>*");
+        let cellNumber=0;
+        let counter=1;
+        cellsElements.forEach((cell)=>{
+            //cell row 1 display
+            if(counter<=3){
+                cell.textContent = gameboard.row1[cellNumber];
+                counter++;
+                cellNumber++;
+                
+            }
+            //cell row 2 display
+            else if(counter>3&&counter<=6){
+                if(counter==4){
+                    cellNumber=0;
+                }
+                else{
+                    cellNumber++;
+                }
+                cell.textContent =gameboard.row2[cellNumber];
+                counter++
+            }
+             //cell 7-9
+            else if(counter>6&&counter<=9){
+                if(counter==7){
+                    cellNumber=0;
+                }
+                else{
+                    cellNumber++;
+                }
+                cell.textContent = gameboard.row3[cellNumber];
+                counter++
+            }
+            else{
+                console.log("do nothing");
+            }         
+        })
+    }
+    return {createEmptyBoard,addMarker,checkForWinOrTie,addGameboardToDisplay};
+})();
+
+let Gameplay= function play(){
+    
+    function playRound(gameboard,row,cell,counter){
+        let user1Marker = "x";//x
+        let user2Marker = "o";//o
+        if (counter%2 !== 0){//if odd,usermarker1,if even2. need a counter
+            Gameboard.addMarker(gameboard,user1Marker,row,cell);
+        }
+        else{
+            Gameboard.addMarker(gameboard,user2Marker,row,cell);
+        }
+        Gameboard.addGameboardToDisplay(gameboard);
+        Gameboard.checkForWinOrTie(gameboard);
+    }
+
+    return{playRound};
+}();//add () to run
+
+console.log("to start the game I must first create an empty gameboard");
+console.log(Gameboard.createEmptyBoard);
+let gameboard = Gameboard.createEmptyBoard;
+
+let turn = (function(){
+    //event listener for each div
+    let goCounter = 0;
+    let cellElements = document.querySelectorAll(".gameContainer>*");
+    cellElements.forEach((cell)=>{
+        //read input cell
+        cell.addEventListener("click",()=>{
+            goCounter++;
+            console.log((cell.classList.value).slice(3,4));
+            console.log((cell.id).slice(4,5));
+            rowNumberSelected = (cell.classList.value).slice(3,4);
+            cellNumberSelected = (cell.id).slice(4,5)-1;
+            Gameplay.playRound(gameboard,rowNumberSelected,cellNumberSelected,goCounter);
+        })
+    });
 })();
 
 
 
-let oneGame = (function playGame(){
-    console.log("to start the game I must first create an empty gameboard");
-    console.log(Gameboard.createEmptyBoard);
-    let gameboard = Gameboard.createEmptyBoard;
-    let userMarker = 1;//x
-    let computerMarker = 0;//o
-    let userOneChoice,userTwoChoice; //this will be gotten from a click but for now ill set it
-  
-    //example game flow for builidng game - user 1 wins
-    Gameboard.addMarker(gameboard,userMarker,3,0);//user1 choice
-    Gameboard.checkForWinOrTie(gameboard);
-    Gameboard.addMarker(gameboard,computerMarker,3,2);//user2 choice
-    Gameboard.checkForWinOrTie(gameboard);
-    Gameboard.addMarker(gameboard,userMarker,1,2);//user1 choice
-    Gameboard.checkForWinOrTie(gameboard);
-    Gameboard.addMarker(gameboard,computerMarker,2,1);//user2 choice
-    Gameboard.checkForWinOrTie(gameboard);
-    Gameboard.addMarker(gameboard,userMarker,1,0);//user1 choice
-    Gameboard.checkForWinOrTie(gameboard);
-    Gameboard.addMarker(gameboard,computerMarker,1,1);//user2 choice
-    Gameboard.checkForWinOrTie(gameboard);
-    Gameboard.addMarker(gameboard,userMarker,2,0);//user1 choice
-    Gameboard.checkForWinOrTie(gameboard);
-    //check for win
-    
-    //when 3 in a row or tie console log user1 won/user2 won/tie
-    
 
-
-    return{};
-})();
