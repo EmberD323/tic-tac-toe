@@ -30,30 +30,63 @@ let Gameboard = (function createGameboard(){//module for creating initial empty 
         return gameboard;
     }
     function checkForWinOrTie(gameboard){
+        //check for win in rows
         for (const row in gameboard) {
-            gameboard.row1[1]=1; //just temp for checking this loop
             let cell1 = `${gameboard[row][0]}`;
+            let cell1undefined =gameboard[row][0];
             let cell2 = `${gameboard[row][1]}`;
             let cell3 = `${gameboard[row][2]}`;
-            if(cell1==cell2&&cell1==cell3&&cell2==cell3){
-                console.log("we have a winner");
-            }
-            else{
-                console.log("this row contains "+cell1+cell2+cell3);
+            if(typeof cell1undefined !== 'undefined'){
+                if(cell1==cell2&&cell1==cell3&&cell2==cell3){
+                    console.log("We have a winner by rows.The " +cell1+" marker wins.");
+                    return;
+                }
             }
             
-            //`${gameboard[row][2]}`
-            //`${gameboard[row][3]}`
+            
           }
-        //for
-        //check for win
-        //if any row is all 1s or 0s
-
-        //if any column is all 1s or 0s
-        //if diagonals are all 1s or 0s
-
-        //check if board is full and no win i.e tie
-
+        //check for win in columns
+        for(i=0;i<3;i++){
+            let row1i = gameboard.row1[i];
+            let row1undefined =gameboard.row1[i];
+            let row2i = gameboard.row2[i];
+            let row3i = gameboard.row3[i];
+            if(typeof row1undefined !== 'undefined'){
+                if(row1i==row2i&&row1i==row3i&&row2i==row3i){
+                    console.log("We have a winner by columns.The " +row1i+" marker wins.");
+                    return;
+                }
+            }
+        }
+        //check for win in diagonal
+        const diagonalOne = [gameboard.row1[0],gameboard.row2[1],gameboard.row3[2]];
+        const diagonalTwo = [gameboard.row1[2],gameboard.row2[1],gameboard.row3[0]];
+        //check if undefined in diagonals
+        diagonalOneCheck = diagonalOne.filter((cell)=>typeof cell == 'undefined');
+        diagonalTwoCheck = diagonalTwo.filter((cell)=>typeof cell == 'undefined');
+        if(diagonalOneCheck.length >0||diagonalTwoCheck.length >0){
+        }
+        else if(diagonalOne[0]==diagonalOne[1]&&diagonalOne[0]==diagonalOne[2]&&diagonalOne[1]==diagonalOne[2]){
+            console.log("We have a winner by diagonal1.The " +diagonalOne[0]+" marker wins.");
+                return;
+        }
+        else if(diagonalTwo[0]==diagonalTwo[1]&&diagonalTwo[0]==diagonalTwo[2]&&diagonalTwo[1]==diagonalTwo[2]){
+            console.log("We have a winner by diagonal2.The " +diagonalTwo[0]+" marker wins.");
+                return;
+        }
+        
+        //check if board has space,else tie
+        for (const row in gameboard){
+            let cell1 = gameboard[row][0];
+            let cell2 = gameboard[row][1];
+            let cell3 = gameboard[row][2];
+            if(typeof cell1 == 'undefined'||typeof cell2 == 'undefined'||typeof cell3 == 'undefined'){
+                console.log("Please continue game");
+                return;
+            }
+        }
+        console.log("It's a tie!")
+        return;
     }
     return {createEmptyBoard,addMarker,checkForWinOrTie};
 })();
@@ -70,14 +103,21 @@ let oneGame = (function playGame(){
   
     //example game flow for builidng game - user 1 wins
     Gameboard.addMarker(gameboard,userMarker,3,0);//user1 choice
-    Gameboard.addMarker(gameboard,computerMarker,3,2);//user2 choice
-    Gameboard.addMarker(gameboard,userMarker,1,2);//user1 choice
-    Gameboard.addMarker(gameboard,computerMarker,2,1);//user2 choice
-    Gameboard.addMarker(gameboard,userMarker,1,0);//user1 choice
-    Gameboard.addMarker(gameboard,computerMarker,1,1);//user2 choice
-    Gameboard.addMarker(gameboard,userMarker,2,0);//user1 choice
-    //check for win
     Gameboard.checkForWinOrTie(gameboard);
+    Gameboard.addMarker(gameboard,computerMarker,3,2);//user2 choice
+    Gameboard.checkForWinOrTie(gameboard);
+    Gameboard.addMarker(gameboard,userMarker,1,2);//user1 choice
+    Gameboard.checkForWinOrTie(gameboard);
+    Gameboard.addMarker(gameboard,computerMarker,2,1);//user2 choice
+    Gameboard.checkForWinOrTie(gameboard);
+    Gameboard.addMarker(gameboard,userMarker,1,0);//user1 choice
+    Gameboard.checkForWinOrTie(gameboard);
+    Gameboard.addMarker(gameboard,computerMarker,1,1);//user2 choice
+    Gameboard.checkForWinOrTie(gameboard);
+    Gameboard.addMarker(gameboard,userMarker,2,0);//user1 choice
+    Gameboard.checkForWinOrTie(gameboard);
+    //check for win
+    
     //when 3 in a row or tie console log user1 won/user2 won/tie
     
 
