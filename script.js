@@ -1,9 +1,14 @@
+
 let Gameboard = (
     function createGameboard(){//module for creating initial empty gameboard
-    let cell1, cell2, cell3;
-    const createEmptyBoard = {row1:[cell1,cell2,cell3]
+    function createEmptyBoard(){
+        let cell1, cell2, cell3;
+        const createEmptyBoard = {row1:[cell1,cell2,cell3]
         ,row2:[cell1,cell2,cell3]
         ,row3:[cell1,cell2,cell3]}
+        return createEmptyBoard;
+
+    }
     function addMarker(gameboard,marker,rownumber,cell){
         if(marker=="x"){
             if(rownumber==1){
@@ -27,6 +32,7 @@ let Gameboard = (
                 gameboard.row3[cell] = "o";
             }
         }
+        console.log(gameboard);
 
         return gameboard;
     }
@@ -126,11 +132,29 @@ let Gameboard = (
             }         
         })
     }
-    return {createEmptyBoard,addMarker,checkForWinOrTie,addGameboardToDisplay};
+    function addNames(nameOne,nameTwo){
+        let nameElements = document.querySelectorAll(".names>div");
+        nameElements[0].textContent = nameOne;
+        nameElements[1].textContent = " vs ";
+        nameElements[2].textContent = nameTwo;
+    }
+    function refreshGameboard(gameboard){
+        console.log(gameboard);
+        let cell1, cell2, cell3;
+        gameboard = {row1:[cell1,cell2,cell3]
+        ,row2:[cell1,cell2,cell3]
+        ,row3:[cell1,cell2,cell3]}
+        console.log(gameboard);
+        return gameboard;
+        
+
+
+    }
+
+    return {createEmptyBoard,addMarker,checkForWinOrTie,addGameboardToDisplay,addNames,refreshGameboard};
 })();
 
 let Gameplay= function play(){
-    
     function playRound(gameboard,row,cell,counter){
         let user1Marker = "x";//x
         let user2Marker = "o";//o
@@ -147,30 +171,46 @@ let Gameplay= function play(){
     return{playRound};
 }();//add () to run
 
-console.log("to start the game I must first create an empty gameboard");
-console.log(Gameboard.createEmptyBoard);
-let gameboard = Gameboard.createEmptyBoard;
+let userInputs = (function(){
+    //player names input
+    const submitButton = document.querySelector(".submit");
+    submitButton.addEventListener("click",(e)=>{
+        e.preventDefault();
+        playerOneName = document.querySelector(".player1").value;
+        playerTwoName = document.querySelector(".player2").value;
+        Gameboard.addNames(playerOneName,playerTwoName);
+    });
 
-let turn = (function(){
-    //event listener for each div
+    //tictactoe cells input
     let goCounter = 0;
     let cellElements = document.querySelectorAll(".gameContainer>*");
     cellElements.forEach((cell)=>{
         //read user click
         cell.addEventListener("click",()=>{   
-            console.log((cell.classList.value).slice(3,4));
-            console.log((cell.id).slice(4,5));
             rowNumberSelected = (cell.classList.value).slice(3,4);
             cellNumberSelected = (cell.id).slice(4,5)-1;
-            console.log("cell text " + cell.textContent);
             if(cell.textContent !=="x" && cell.textContent !=="o"){
                 goCounter++;
                 Gameplay.playRound(gameboard,rowNumberSelected,cellNumberSelected,goCounter);
-            }
-            
+                console.log("go counter is" + goCounter);
+            }   
         })
     });
+
+    //restart input
+    const restartButton = document.querySelector(".restart");
+    restartButton.addEventListener("click",(e)=>{
+        gameboard = Gameboard.refreshGameboard(gameboard);
+        goCounter = 0;
+
+    });
 })();
+
+
+
+console.log("to start the game I must first create an empty gameboard");
+console.log(Gameboard.createEmptyBoard());
+ let gameboard = Gameboard.createEmptyBoard();
 
 
 
