@@ -156,14 +156,18 @@ let turn = (function(){
     let goCounter = 0;
     let cellElements = document.querySelectorAll(".gameContainer>*");
     cellElements.forEach((cell)=>{
-        //read input cell
-        cell.addEventListener("click",()=>{
-            goCounter++;
+        //read user click
+        cell.addEventListener("click",()=>{   
             console.log((cell.classList.value).slice(3,4));
             console.log((cell.id).slice(4,5));
             rowNumberSelected = (cell.classList.value).slice(3,4);
             cellNumberSelected = (cell.id).slice(4,5)-1;
-            Gameplay.playRound(gameboard,rowNumberSelected,cellNumberSelected,goCounter);
+            console.log("cell text " + cell.textContent);
+            if(cell.textContent !=="x" && cell.textContent !=="o"){
+                goCounter++;
+                Gameplay.playRound(gameboard,rowNumberSelected,cellNumberSelected,goCounter);
+            }
+            
         })
     });
 })();
