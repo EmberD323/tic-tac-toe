@@ -38,6 +38,7 @@ let Gameboard = (
     }
     function checkForWinOrTie(gameboard){
         //check for win in rows
+        const annouceElement = document.querySelector(".announce");
         for (const row in gameboard) {
             let cell1 = `${gameboard[row][0]}`;
             let cell1undefined =gameboard[row][0];
@@ -45,7 +46,7 @@ let Gameboard = (
             let cell3 = `${gameboard[row][2]}`;
             if(typeof cell1undefined !== 'undefined'){
                 if(cell1==cell2&&cell1==cell3&&cell2==cell3){
-                    alert("We have a winner by rows.The " +cell1+" marker wins.");
+                    annouceElement.textContent = "We have a winner by rows.The " +cell1+" marker wins."
                     return;
                 }
             }
@@ -58,7 +59,7 @@ let Gameboard = (
             let row3i = gameboard.row3[i];
             if(typeof row1undefined !== 'undefined'){
                 if(row1i==row2i&&row1i==row3i&&row2i==row3i){
-                    alert("We have a winner by columns.The " +row1i+" marker wins.");
+                    annouceElement.textContent = "We have a winner by columns.The " +row1i+" marker wins.";
                     return;
                 }
             }
@@ -69,14 +70,14 @@ let Gameboard = (
         //check if undefined in diagonals
         diagonalOneCheck = diagonalOne.filter((cell)=>typeof cell == 'undefined');
         diagonalTwoCheck = diagonalTwo.filter((cell)=>typeof cell == 'undefined');
-        if(diagonalOneCheck.length >0||diagonalTwoCheck.length >0){
+        if(diagonalOneCheck.length >=1||diagonalTwoCheck.length >=1){
         }
         else if(diagonalOne[0]==diagonalOne[1]&&diagonalOne[0]==diagonalOne[2]&&diagonalOne[1]==diagonalOne[2]){
-            alert("We have a winner by diagonal1.The " +diagonalOne[0]+" marker wins.");
+           annouceElement.textContent = "We have a winner by diagonal1.The " +diagonalOne[0]+" marker wins.";
                 return;
         }
         else if(diagonalTwo[0]==diagonalTwo[1]&&diagonalTwo[0]==diagonalTwo[2]&&diagonalTwo[1]==diagonalTwo[2]){
-            alert("We have a winner by diagonal2.The " +diagonalTwo[0]+" marker wins.");
+            annouceElement.textContent = "We have a winner by diagonal2.The " +diagonalTwo[0]+" marker wins.";
                 return;
         }
         
@@ -90,7 +91,7 @@ let Gameboard = (
                 return;
             }
         }
-        alert("It's a tie!");
+        annouceElement.textContent = "It's a tie!";
         return;
     }
     function addGameboardToDisplay(gameboard){
@@ -145,10 +146,13 @@ let Gameboard = (
         ,row2:[cell1,cell2,cell3]
         ,row3:[cell1,cell2,cell3]}
         console.log(gameboard);
+        addGameboardToDisplay(gameboard);
+        let nameElements = document.querySelectorAll(".names>div");
+        nameElements[0].textContent = "";
+        nameElements[1].textContent = "";
+        nameElements[2].textContent = "";
         return gameboard;
         
-
-
     }
 
     return {createEmptyBoard,addMarker,checkForWinOrTie,addGameboardToDisplay,addNames,refreshGameboard};
@@ -202,7 +206,6 @@ let userInputs = (function(){
     restartButton.addEventListener("click",(e)=>{
         gameboard = Gameboard.refreshGameboard(gameboard);
         goCounter = 0;
-
     });
 })();
 
