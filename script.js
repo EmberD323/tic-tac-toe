@@ -65,21 +65,30 @@ let Gameboard = (
             }
         }
         //check for win in diagonal
+        
         const diagonalOne = [gameboard.row1[0],gameboard.row2[1],gameboard.row3[2]];
         const diagonalTwo = [gameboard.row1[2],gameboard.row2[1],gameboard.row3[0]];
         //check if undefined in diagonals
-        diagonalOneCheck = diagonalOne.filter((cell)=>typeof cell == 'undefined');
-        diagonalTwoCheck = diagonalTwo.filter((cell)=>typeof cell == 'undefined');
-        if(diagonalOneCheck.length >=1||diagonalTwoCheck.length >=1){
+        console.log(typeof(diagonalOne[0]))
+        if(typeof diagonalOne[0] !== 'undefined'){
+            if(diagonalOne[0]==diagonalOne[1]&&diagonalOne[0]==diagonalOne[2]&&diagonalOne[1]==diagonalOne[2]){
+                annouceElement.textContent = "We have a winner by diagonal1.The " +diagonalOne[0]+" marker wins.";
+                     return;
+             }
+            
         }
-        else if(diagonalOne[0]==diagonalOne[1]&&diagonalOne[0]==diagonalOne[2]&&diagonalOne[1]==diagonalOne[2]){
-           annouceElement.textContent = "We have a winner by diagonal1.The " +diagonalOne[0]+" marker wins.";
-                return;
+        if(typeof diagonalTwo[0] !== 'undefined'){
+            if(diagonalTwo[0]==diagonalTwo[1]&&diagonalTwo[0]==diagonalTwo[2]&&diagonalTwo[1]==diagonalTwo[2]){
+                annouceElement.textContent = "We have a winner by diagonal2.The " +diagonalTwo[0]+" marker wins.";
+                    return;
+            }
+            
         }
-        else if(diagonalTwo[0]==diagonalTwo[1]&&diagonalTwo[0]==diagonalTwo[2]&&diagonalTwo[1]==diagonalTwo[2]){
-            annouceElement.textContent = "We have a winner by diagonal2.The " +diagonalTwo[0]+" marker wins.";
-                return;
-        }
+
+        
+      
+        
+        
         
         //check if board has space,else tie
         for (const row in gameboard){
