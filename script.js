@@ -37,6 +37,12 @@ let Gameboard = (
         return gameboard;
     }
     function checkForWinOrTie(gameboard){
+        //define winnernames
+        let names = getNames();
+        console.log(names);
+        playerOneName = names[0];
+        playerTwoName = names[1];
+
         //check for win in rows
         const annouceElement = document.querySelector(".announce");
         for (const row in gameboard) {
@@ -46,7 +52,16 @@ let Gameboard = (
             let cell3 = `${gameboard[row][2]}`;
             if(typeof cell1undefined !== 'undefined'){
                 if(cell1==cell2&&cell1==cell3&&cell2==cell3){
-                    annouceElement.textContent = "We have a winner by rows.The " +cell1+" marker wins."
+                    if(cell1 == "x"){
+                        console.log(cell1);
+                        let winner = playerOneName;
+                        console.log("oh hey x")
+                        annouceElement.textContent = "We have a winner. " +winner+" wins."
+                    }else{
+                        console.log("oh hey o")
+                        let winner = playerTwoName;
+                        annouceElement.textContent = "We have a winner." +winner+" wins."
+                    }
                     return;
                 }
             }
@@ -59,7 +74,13 @@ let Gameboard = (
             let row3i = gameboard.row3[i];
             if(typeof row1undefined !== 'undefined'){
                 if(row1i==row2i&&row1i==row3i&&row2i==row3i){
-                    annouceElement.textContent = "We have a winner by columns.The " +row1i+" marker wins.";
+                    if(row1i == "x"){
+                        let winner = playerOneName;
+                        annouceElement.textContent = "We have a winner. " +winner+" wins."
+                    }else{
+                        let winner = playerTwoName;
+                        annouceElement.textContent = "We have a winner." +winner+" wins."
+                    }
                     return;
                 }
             }
@@ -72,24 +93,30 @@ let Gameboard = (
         console.log(typeof(diagonalOne[0]))
         if(typeof diagonalOne[0] !== 'undefined'){
             if(diagonalOne[0]==diagonalOne[1]&&diagonalOne[0]==diagonalOne[2]&&diagonalOne[1]==diagonalOne[2]){
-                annouceElement.textContent = "We have a winner by diagonal1.The " +diagonalOne[0]+" marker wins.";
-                     return;
+                if(diagonalOne[0] == "x"){
+                    let winner = playerOneName;
+                    annouceElement.textContent = "We have a winner. " +winner+" wins."
+                }else{
+                    let winner = playerTwoName;
+                    annouceElement.textContent = "We have a winner." +winner+" wins."
+                }
              }
             
         }
         if(typeof diagonalTwo[0] !== 'undefined'){
             if(diagonalTwo[0]==diagonalTwo[1]&&diagonalTwo[0]==diagonalTwo[2]&&diagonalTwo[1]==diagonalTwo[2]){
-                annouceElement.textContent = "We have a winner by diagonal2.The " +diagonalTwo[0]+" marker wins.";
+                if(diagonalTwo[0] == "x"){
+                    let winner = playerOneName;
+                    annouceElement.textContent = "We have a winner by diagonal. " +winner+" wins."
+                }else{
+                    let winner = playerTwoName;
+                    annouceElement.textContent = "We have a winner by diagonal." +winner+" wins."
+                }
                     return;
             }
             
         }
 
-        
-      
-        
-        
-        
         //check if board has space,else tie
         for (const row in gameboard){
             let cell1 = gameboard[row][0];
@@ -100,7 +127,7 @@ let Gameboard = (
                 return;
             }
         }
-        annouceElement.textContent = "It's a tie!";
+        annouceElement.textContent = "An even match, it's a tie!";
         return;
     }
     function addGameboardToDisplay(gameboard){
@@ -142,11 +169,19 @@ let Gameboard = (
             }         
         })
     }
-    function addNames(nameOne,nameTwo){
+    function AddNames(nameOne,nameTwo){
         let nameElements = document.querySelectorAll(".names>div");
         nameElements[0].textContent = nameOne;
         nameElements[1].textContent = " vs ";
         nameElements[2].textContent = nameTwo;
+        return{nameOne,nameTwo}
+    }
+    function getNames(){
+        let nameElements = document.querySelectorAll(".names>div");
+        let playerOneName = nameElements[0].textContent;
+        let playerTwoName = nameElements[2].textContent;
+        return[playerOneName,playerTwoName];
+        
     }
     function refreshGameboard(gameboard){
         console.log(gameboard);
@@ -161,7 +196,7 @@ let Gameboard = (
         return gameboard;
         
     }
-    return {createEmptyBoard,addMarker,checkForWinOrTie,addGameboardToDisplay,addNames,refreshGameboard};
+    return {createEmptyBoard,addMarker,checkForWinOrTie,addGameboardToDisplay,AddNames,getNames,refreshGameboard};
 })();
 
 let Gameplay= function play(){
@@ -187,7 +222,8 @@ let userInputs = (function(){
         e.preventDefault();
         playerOneName = document.querySelector("#player1").value;
         playerTwoName = document.querySelector("#player2").value;
-        Gameboard.addNames(playerOneName,playerTwoName);
+        Gameboard.AddNames(playerOneName,playerTwoName);
+        
     });
 
     //tictactoe cells input
