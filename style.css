@@ -66,7 +66,7 @@ form>.submit{
     
 }
 
-form>.submit,.restart{
+form>.submit,#restart{
     font-size: 19px; 
     line-height: 19px; 
     padding: 9px; 
@@ -78,8 +78,10 @@ form>.submit,.restart{
 }
 
 .restart{
-    margin: 20px 565px
+    display: flex;
+    justify-content: center;
+    padding:15px;
 }
-form>.submit:hover,div .player1:hover,div .player2:hover,.restart:hover{
+form>.submit:hover,div .player1:hover,div .player2:hover,#restart:hover{
     background-color: var(--secondary-color);
 }
