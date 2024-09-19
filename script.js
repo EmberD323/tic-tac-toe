@@ -198,14 +198,17 @@ let userInputs = (function(){
     cellElements.forEach((cell)=>{
         //read user click
         cell.addEventListener("click",()=>{   
-            rowNumberSelected = (cell.classList.value).slice(3,4);
-            cellNumberSelected = (cell.id).slice(4,5)-1;
-            if(cell.textContent !=="x" && cell.textContent !=="o"){
-                goCounter++;
-                Gameplay.playRound(gameboard,rowNumberSelected,cellNumberSelected,goCounter);
-                console.log("go counter is" + goCounter);
+            let annouceText = document.querySelector(".announce").textContent;
+            if (annouceText==""){
+                rowNumberSelected = (cell.classList.value).slice(3,4);
+                cellNumberSelected = (cell.id).slice(4,5)-1;
+                if(cell.textContent !=="x" && cell.textContent !=="o"){
+                    goCounter++;
+                    Gameplay.playRound(gameboard,rowNumberSelected,cellNumberSelected,goCounter);
+                }
             }   
         })
+        
     });
 
     //restart input
