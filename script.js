@@ -154,7 +154,6 @@ let Gameboard = (
         return gameboard;
         
     }
-
     return {createEmptyBoard,addMarker,checkForWinOrTie,addGameboardToDisplay,addNames,refreshGameboard};
 })();
 
@@ -171,7 +170,6 @@ let Gameplay= function play(){
         Gameboard.addGameboardToDisplay(gameboard);
         Gameboard.checkForWinOrTie(gameboard);
     }
-
     return{playRound};
 }();//add () to run
 
@@ -209,10 +207,6 @@ let userInputs = (function(){
     });
 })();
 
-
-
-console.log("to start the game I must first create an empty gameboard");
-console.log(Gameboard.createEmptyBoard());
  let gameboard = Gameboard.createEmptyBoard();
 
 
