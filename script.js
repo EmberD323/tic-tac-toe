@@ -187,8 +187,8 @@ let userInputs = (function(){
     const submitButton = document.querySelector(".submit");
     submitButton.addEventListener("click",(e)=>{
         e.preventDefault();
-        playerOneName = document.querySelector(".player1").value;
-        playerTwoName = document.querySelector(".player2").value;
+        playerOneName = document.querySelector("#player1").value;
+        playerTwoName = document.querySelector("#player2").value;
         Gameboard.addNames(playerOneName,playerTwoName);
     });
 
