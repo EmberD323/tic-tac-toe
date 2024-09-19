@@ -216,6 +216,9 @@ let userInputs = (function(){
     restartButton.addEventListener("click",(e)=>{
         gameboard = Gameboard.refreshGameboard(gameboard);
         goCounter = 0;
+        playerOneName = document.querySelector("#player1").value;
+        playerTwoName = document.querySelector("#player2").value;
+        Gameboard.addNames(playerOneName,playerTwoName);
     });
 })();
 
