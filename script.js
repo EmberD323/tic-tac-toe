@@ -1,4 +1,18 @@
+//using query selector only once, defining DOM elements to be used throughout code
+let allDomElements =document.querySelector("body").childNodes;
+let announceDOM = allDomElements[5];
+let restartButtonDOM = allDomElements[9].childNodes[1];
+let nameDOM =allDomElements[1].childNodes;
+console.log(nameDOM);
+let allGameboardCellsDOM = allDomElements[3].childNodes;
+let formDOM = allDomElements[7].childNodes;
+let submitButtonDOM = formDOM[5];
+let player1InputDOM = formDOM[1].childNodes[3];
+let player2InputDOM = formDOM[3].childNodes[3];
 
+
+
+//console.log(allCellsDOM);
 let Gameboard = (
     function createGameboard(){//module for creating initial empty gameboard
     function createEmptyBoard(){
@@ -44,7 +58,6 @@ let Gameboard = (
         playerTwoName = names[1];
 
         //check for win in rows
-        const annouceElement = document.querySelector(".announce");
         for (const row in gameboard) {
             let cell1 = `${gameboard[row][0]}`;
             let cell1undefined =gameboard[row][0];
@@ -56,11 +69,11 @@ let Gameboard = (
                         console.log(cell1);
                         let winner = playerOneName;
                         console.log("oh hey x")
-                        annouceElement.textContent = "We have a winner. " +winner+" wins."
+                        announceDOM.textContent = "We have a winner. " +winner+" wins."
                     }else{
                         console.log("oh hey o")
                         let winner = playerTwoName;
-                        annouceElement.textContent = "We have a winner." +winner+" wins."
+                        announceDOM.textContent = "We have a winner." +winner+" wins."
                     }
                     return;
                 }
@@ -76,10 +89,10 @@ let Gameboard = (
                 if(row1i==row2i&&row1i==row3i&&row2i==row3i){
                     if(row1i == "x"){
                         let winner = playerOneName;
-                        annouceElement.textContent = "We have a winner. " +winner+" wins."
+                        announceDOM.textContent = "We have a winner. " +winner+" wins."
                     }else{
                         let winner = playerTwoName;
-                        annouceElement.textContent = "We have a winner." +winner+" wins."
+                        announceDOM.textContent = "We have a winner." +winner+" wins."
                     }
                     return;
                 }
@@ -95,10 +108,10 @@ let Gameboard = (
             if(diagonalOne[0]==diagonalOne[1]&&diagonalOne[0]==diagonalOne[2]&&diagonalOne[1]==diagonalOne[2]){
                 if(diagonalOne[0] == "x"){
                     let winner = playerOneName;
-                    annouceElement.textContent = "We have a winner. " +winner+" wins."
+                    announceDOM.textContent = "We have a winner. " +winner+" wins."
                 }else{
                     let winner = playerTwoName;
-                    annouceElement.textContent = "We have a winner." +winner+" wins."
+                    announceDOM.textContent = "We have a winner." +winner+" wins."
                 }
              }
             
@@ -107,10 +120,10 @@ let Gameboard = (
             if(diagonalTwo[0]==diagonalTwo[1]&&diagonalTwo[0]==diagonalTwo[2]&&diagonalTwo[1]==diagonalTwo[2]){
                 if(diagonalTwo[0] == "x"){
                     let winner = playerOneName;
-                    annouceElement.textContent = "We have a winner by diagonal. " +winner+" wins."
+                    announceDOM.textContent = "We have a winner by diagonal. " +winner+" wins."
                 }else{
                     let winner = playerTwoName;
-                    annouceElement.textContent = "We have a winner by diagonal." +winner+" wins."
+                    announceDOM.textContent = "We have a winner by diagonal." +winner+" wins."
                 }
                     return;
             }
@@ -127,14 +140,13 @@ let Gameboard = (
                 return;
             }
         }
-        annouceElement.textContent = "An even match, it's a tie!";
+        announceDOM.textContent = "An even match, it's a tie!";
         return;
     }
     function addGameboardToDisplay(gameboard){
-        let cellsElements = document.querySelectorAll(".gameContainer>*");
         let cellNumber=0;
         let counter=1;
-        cellsElements.forEach((cell)=>{
+        allGameboardCellsDOM.forEach((cell)=>{
             //cell row 1 display
             if(counter<=3){
                 cell.textContent = gameboard.row1[cellNumber];
@@ -170,16 +182,14 @@ let Gameboard = (
         })
     }
     function AddNames(nameOne,nameTwo){
-        let nameElements = document.querySelectorAll(".names>div");
-        nameElements[0].textContent = nameOne;
-        nameElements[1].textContent = " vs ";
-        nameElements[2].textContent = nameTwo;
+        nameDOM[0].textContent = nameOne;
+        nameDOM[1].textContent = " vs ";
+        nameDOM[2].textContent = nameTwo;
         return{nameOne,nameTwo}
     }
     function getNames(){
-        let nameElements = document.querySelectorAll(".names>div");
-        let playerOneName = nameElements[0].textContent;
-        let playerTwoName = nameElements[2].textContent;
+        let playerOneName = nameDOM[0].textContent;
+        let playerTwoName = nameDOM[2].textContent;
         return[playerOneName,playerTwoName];
         
     }
@@ -191,8 +201,7 @@ let Gameboard = (
         ,row3:[cell1,cell2,cell3]}
         console.log(gameboard);
         addGameboardToDisplay(gameboard);
-        const annouceElement = document.querySelector(".announce");
-        annouceElement.textContent = "";
+        announceDOM.textContent = "";
         return gameboard;
         
     }
@@ -217,22 +226,20 @@ let Gameplay= function play(){
 
 let userInputs = (function(){
     //player names input
-    const submitButton = document.querySelector(".submit");
-    submitButton.addEventListener("click",(e)=>{
+    submitButtonDOM.addEventListener("click",(e)=>{
         e.preventDefault();
-        playerOneName = document.querySelector("#player1").value;
-        playerTwoName = document.querySelector("#player2").value;
+        playerOneName = player1InputDOM.value;
+        playerTwoName = player2InputDOM.value;
         Gameboard.AddNames(playerOneName,playerTwoName);
         
     });
 
     //tictactoe cells input
     let goCounter = 0;
-    let cellElements = document.querySelectorAll(".gameContainer>*");
-    cellElements.forEach((cell)=>{
+    allGameboardCellsDOM.forEach((cell)=>{
         //read user click
         cell.addEventListener("click",()=>{   
-            let annouceText = document.querySelector(".announce").textContent;
+            let annouceText = announceDOM.textContent;
             if (annouceText==""){
                 rowNumberSelected = (cell.classList.value).slice(3,4);
                 cellNumberSelected = (cell.id).slice(4,5)-1;
@@ -246,8 +253,7 @@ let userInputs = (function(){
     });
 
     //restart input
-    const restartButton = document.querySelector(".restart");
-    restartButton.addEventListener("click",(e)=>{
+    restartButtonDOM.addEventListener("click",(e)=>{
         gameboard = Gameboard.refreshGameboard(gameboard);
         goCounter = 0;
     });
