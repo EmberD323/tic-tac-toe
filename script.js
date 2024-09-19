@@ -156,10 +156,8 @@ let Gameboard = (
         ,row3:[cell1,cell2,cell3]}
         console.log(gameboard);
         addGameboardToDisplay(gameboard);
-        let nameElements = document.querySelectorAll(".names>div");
-        nameElements[0].textContent = "";
-        nameElements[1].textContent = "";
-        nameElements[2].textContent = "";
+        const annouceElement = document.querySelector(".announce");
+        annouceElement.textContent = "";
         return gameboard;
         
     }
@@ -216,9 +214,6 @@ let userInputs = (function(){
     restartButton.addEventListener("click",(e)=>{
         gameboard = Gameboard.refreshGameboard(gameboard);
         goCounter = 0;
-        playerOneName = document.querySelector("#player1").value;
-        playerTwoName = document.querySelector("#player2").value;
-        Gameboard.addNames(playerOneName,playerTwoName);
     });
 })();
 
